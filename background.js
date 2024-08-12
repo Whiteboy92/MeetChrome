@@ -6,17 +6,11 @@ chrome.runtime.onMessage.addListener((message) => {
 
         audio.addEventListener('canplaythrough', () => {
             // Ensure the audio context is resumed
-            if (audioContext.state === 'suspended') {
                 audioContext.resume().then(() => {
                     audio.play().catch(error => {
                         console.error('Failed to play beep sound:', error);
                     });
                 });
-            } else {
-                audio.play().catch(error => {
-                    console.error('Failed to play beep sound:', error);
-                });
-            }
         });
     }
 });
