@@ -1,18 +1,13 @@
-chrome.runtime.onMessage.addListener((message) => {
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     if (message.action === 'playBeep') {
-        console.log('Received playBeep message');
-        const beepUrl = chrome.runtime.getURL('beep.mp3');
-        console.log('Beep URL:', beepUrl);
-
-        const audio = new Audio(beepUrl);
-        audio.addEventListener('error', (error) => {
-            console.error('Audio playback error:', error);
-        });
-
-        audio.play().then(() => {
-            console.log('Beep sound played successfully');
-        }).catch((error) => {
-            console.error('Failed to play beep sound:', error);
+        console.log('Received playBeep message in background script');
+        
+        // Query the active tab in the current window
+        chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+            if (tabs.length > 0) {
+                // Send the playBeep message to the content script of the active tab
+                chrome.tabs.sendMessage(tabs[0].id, { action: 'playBeep' });
+            }
         });
     }
 });
