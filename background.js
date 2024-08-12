@@ -1,16 +1,18 @@
 chrome.runtime.onMessage.addListener((message) => {
     if (message.action === 'playBeep') {
-        // Create a new AudioContext when the beep is played
-        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-        const audio = new Audio(chrome.runtime.getURL('beep.mp3'));
+        console.log('Received playBeep message');
+        const beepUrl = chrome.runtime.getURL('beep.mp3');
+        console.log('Beep URL:', beepUrl);
 
-        audio.addEventListener('canplaythrough', () => {
-            // Ensure the audio context is resumed
-                audioContext.resume().then(() => {
-                    audio.play().catch(error => {
-                        console.error('Failed to play beep sound:', error);
-                    });
-                });
+        const audio = new Audio(beepUrl);
+        audio.addEventListener('error', (error) => {
+            console.error('Audio playback error:', error);
+        });
+
+        audio.play().then(() => {
+            console.log('Beep sound played successfully');
+        }).catch((error) => {
+            console.error('Failed to play beep sound:', error);
         });
     }
 });

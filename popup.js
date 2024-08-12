@@ -15,9 +15,4 @@ document.addEventListener('DOMContentLoaded', () => {
         alert('Target participant count saved!');
       });
     });
-
-    // Play beep sound when the button is clicked
-    playBeepBtn.addEventListener('click', () => {
-      chrome.runtime.sendMessage({ action: 'playBeep' });
-    });
 });

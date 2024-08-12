@@ -11,7 +11,6 @@ function getTargetParticipantCount() {
 
 // Get the participant count from the second div with class 'uGOf1d'
 function getParticipantCount() {
-  // Select the first (and only) element with the class 'uGOf1d'
   const participantCountElement = document.querySelector('.uGOf1d');
   
   if (participantCountElement) {
@@ -26,7 +25,6 @@ function getParticipantCount() {
   return null;
 }
 
-
 // Check the participant count and play beep if it changes and matches the target
 async function checkParticipantCount() {
   const currentCount = getParticipantCount();
@@ -34,13 +32,12 @@ async function checkParticipantCount() {
   
   console.log('Target Count:', targetCount); // Debug log
 
-  if (currentCount !== null && currentCount !== previousParticipantCount && currentCount === targetCount) {
-    console.log('Counts match, sending beep message'); // Debug log
+  if (currentCount !== targetCount) {
+    console.log('Counts do not match, play beep'); // Debug log
     chrome.runtime.sendMessage({ action: 'playBeep' });
-    previousParticipantCount = currentCount;
   }
 }
 
 
-// Check participant count every 10 seconds
-setInterval(checkParticipantCount, 3000);
+// Check participant count every 5 seconds
+setInterval(checkParticipantCount, 5000);
